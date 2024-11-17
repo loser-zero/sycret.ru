@@ -5,12 +5,11 @@ import InputMask from 'react-input-mask';
 function ContactForm() {
     const { id } = useParams();
     const location = useLocation();
-    const name = location.state?.name; // Получаем имя из state
+    const name = location.state?.name;
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Перенаправление на страницу оплаты
         navigate(`/payment/${id}`, { state: { name } });
     };
 
@@ -48,3 +47,4 @@ function ContactForm() {
 }
 
 export default ContactForm;
+

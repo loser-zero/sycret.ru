@@ -5,7 +5,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 function Payment() {
     const navigate = useNavigate();
     const location = useLocation();
-    const name = location.state?.name; // Получаем имя из state
+    const name = location.state?.name;
     
     return (
         <div className="container">
