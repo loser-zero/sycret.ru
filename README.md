@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+Описываю проблему: Пытаюсь получить данные с localhost и получаю ошибку CORS.
+![5b3fcfca-fb8d-47ec-ab1f-497ff7995e0e](https://github.com/user-attachments/assets/5070effc-9af7-4391-b2a5-c87f0df92f96)
+Нашёл выход в использовании программы Insomnia, и там без проблем получил данные.
+![72d6d7a6-f92c-49b0-9be0-9559c3996116](https://github.com/user-attachments/assets/18326e70-8a8f-4fad-9fee-a2ac5218e0f0)
+Поэтому я скопировал данные от туда и просто вставил в проект. Надеюсь на ваше понимание, обычным способом я не могу их получить 0_o.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+На всякий случай покажу как я их получал:
 
-## Available Scripts
+const API_URL = 'https://sycret.ru/service/api/api/OSGetGoodList';
+const API_KEY = '011ba11bdcad4fa396660c2ec447ef14';
 
-In the project directory, you can run:
+function CertificateSelection() {
+    const [certificates, setCertificates] = useState([]);
 
-### `npm start`
+    useEffect(() => {
+        const fetchCertificates = async () => {
+            try {
+                const response = await axios.get(API_URL, {
+                    headers: {
+                        'APIKey': API_KEY
+                    }
+                });
+                setCertificates(response.data); // Предполагается, что данные приходят в нужном формате
+            } catch (error) {
+                console.error('Ошибка при получении сертификатов:', error);
+            }
+        };
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+        fetchCertificates();
+    }, []);
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    return (
+        <div>
+            <h1>Выбор сертификата</h1>
+            {certificates.map(item => (
+                <div key={item.ID} className="item">
+                    <h2>{item.NAME}</h2>
+                    <p>Цена: {item.PRICE} руб</p>
+                    <Link to={`/contact/${item.ID}`} state={{ name: item.NAME }}>
+                        <button>Оформить</button>
+                    </Link>
+                </div>
+            ))}
+        </div>
+    );
+}
 
-### `npm test`
+export default CertificateSelection;
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Как-то так. Соответсвенно при выборе товара, я так же не отправляю данные через OSSale, я просто не могу это сделать. Если вы мне поможете решить эту проблему, я с радостью перепишу код на работу с сервером. Впринипе всё остальное я сделал.
